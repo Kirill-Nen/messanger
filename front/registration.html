@@ -89,7 +89,7 @@
 
         document.getElementById('regBtn').addEventListener('click', () => {
             Modal('Регистрация', async(formData) => {
-                const res = await fetch('', {
+                const res = await fetch('http://localhost:3000/api/users/register', {
                     method: 'POST',
                     headers: {"Content-Type": "application/json"},
                     body: JSON.stringify(formData)
@@ -107,7 +107,7 @@
 
         document.getElementById('loginBtn').addEventListener('click', () => {
             Modal('Вход', async (formData) => {
-                const res = await fetch('', {
+                const res = await fetch('http://localhost:3000/api/users/login', {
                     method: 'POST',
                     headers: {"Content-Type": "application/json"},
                     body: JSON.stringify(formData)
@@ -116,7 +116,6 @@
                 const data = await res.json()
                 if (data.success && data.token) {
                     localStorage.setItem('init_token', data.token)
-                    localStorage.getItem('username', data.username)
                     location.href = '/'
                 } else {
                     alert('Такого пользователя не существует')

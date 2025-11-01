@@ -27,6 +27,6 @@ io.on('connection', (socket) => {
     })
 })
 
-server.listen(9000, () => {
+server.listen(8000, () => {
     console.log('Сервер запущен');
 })

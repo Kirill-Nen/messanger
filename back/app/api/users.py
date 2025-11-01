@@ -27,7 +27,6 @@ def create_user():
         if user:
             return jsonify({
                 'success': True,
-                'data': data,
                 'message': 'Вы успешно зарегистрировались в системе.',
                 'token': user.create_auth_token()
             }), 201
@@ -53,7 +52,7 @@ def login_user():
         
     return jsonify({
         'success': False,
-        'message': 'invalid login data'
+        'message': 'Неверные имя пользователя или пароль.'
     })
     
 
