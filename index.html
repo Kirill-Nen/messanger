@@ -23,15 +23,15 @@
 
         const chatList = document.querySelector('.chats')
 
-        if (!localStorage.getItem('init_token')) {
+        if (!localStorage.getItem('init_token') || !localStorage.getItem('username')) {
             location.href = '/registration'
         } else {
             fetch('', {
                 method: 'POST',
                 headers: {"Content-Type": "application/json"},
-                body: JSON.stringify(localStorage.getItem('init_token'))
+                body: JSON.stringify(localStorage.getItem('username'))
             })
-                .then(res => res.json().chats) //приходит из обьекта пользователя (по его токену) поле chats (array) в json 
+                .then(res => res.json().chats) //приходит из обьекта пользователя (по его username из localStorage) поле chats (array) в json 
                 .then(
                     res.forEach(element => {
                         const chat = document.createElement('div')
