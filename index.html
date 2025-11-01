@@ -26,8 +26,12 @@
         if (!localStorage.getItem('init_token')) {
             location.href = '/registration'
         } else {
-            fetch('')
-                .then(res => res.json().chats) //приходит из обьекта пользователя поле chats (array) в json 
+            fetch('', {
+                method: 'POST',
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(localStorage.getItem('init_token'))
+            })
+                .then(res => res.json().chats) //приходит из обьекта пользователя (по его токену) поле chats (array) в json 
                 .then(
                     res.forEach(element => {
                         const chat = document.createElement('div')

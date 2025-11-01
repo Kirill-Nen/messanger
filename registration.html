@@ -96,6 +96,7 @@
                 }) //пост формы
                 //сохраняются на сервер но в ответ ничего не приходит
                 //у пользователя создаются еще его чаты (пустой array)
+                //и один токен
                 const data = await res.json()
                  if (res.ok) {
                     alert('Регистрация прошла успешно!');
@@ -112,7 +113,7 @@
                     headers: {"Content-Type": "application/json"},
                     body: JSON.stringify(formData)
                 }) //пост формы
-                //получить из бд, сгенерировать токен и вкинуть его обратно в JSON ({ accept: boolean, token: string })
+                //получить из бд токен и вкинуть его в JSON ({ accept: boolean, token: string })
                 const data = await res.json()
                 if (data.success && data.token) {
                     localStorage.setItem('init_token', data.token)
