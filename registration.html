@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #main {
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal {
+            z-index: 2;
+            position: fixed;
+            height: 50vh;
+            width: 50vw;
+            border: 1px solid black;
+            border-radius: 5%;
+            background: linear-gradient(45deg, rgb(255, 255, 71), rgb(255, 192, 76));
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal > * {
+            margin-top: 15px;
+            width: 65%;
+            height: 7%;
+        }
+
+        .modal > h3 {
+            text-align: center;
+            color: black;
+            font-size: x-large;
+        }
+    </style>
+</head>
+<body>
+    <div id="main">
+        <button id="regBtn">
+            Регистрация
+        </button>
+        <button id="loginBtn">
+            Вход
+        </button>
+    </div>
+    <script>
+        const mainDiv = document.getElementById('main')
+
+        function registrationModal() {
+            const modal = document.createElement('div')
+            modal.innerHTML = `
+                <span id='close'>Закрыть</span>
+                <h3>Регистрация</h3>
+                <input id='nameInp' placeholder='Введите имя' type='text'>
+                <input id='passInp' placeholder='Введите пароль' type='password'>
+                <button id='send'>Отправить</button>
+            `
+            modal.classList.add('modal')
+            mainDiv.appendChild(modal)
+
+            document.getElementById('close').addEventListener('click', () => [
+                modal.remove()
+            ])
+
+            document.getElementById('send').addEventListener('click', () => {
+                const data = {
+                    username: document.getElementById('nameInp').value,
+                    password: document.getElementById('passInp').value
+                }
+                console.log(data);
+                
+                fetch('', {
+                    type: 'POST',
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify()
+                }) //пост формы
+                //сохраняются на сервер но в ответ ничего не приходит
+
+                modal.remove()
+            })
+        }
+
+        document.getElementById('regBtn').addEventListener('click', () => {
+            registrationModal()
+        })
+    </script>
+</body>
+</html>
