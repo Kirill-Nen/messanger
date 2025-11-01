@@ -6,6 +6,13 @@
     <title>Document</title>
 </head>
 <body>
+    <div>
+        <h3>Мои чаты</h3>
+        <div class="chats">
+
+        </div>
+        <button id="search">Новый чат</button>
+    </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.min.js"></script>
     <script>
         const socket = io()
@@ -14,9 +21,22 @@
             console.log(`Connect`);
         })
 
+        const chatList = document.querySelector('.chats')
+
         if (!localStorage.getItem('init_token')) {
             location.href = '/registration'
+        } else {
+            fetch('')
+                .then(res => res.json().chats) //приходит из обьекта пользователя поле chats (array) в json 
+                .then(
+                    res.forEach(element => {
+                        const chat = document.createElement('div')
+                        chatList.appendChild(chat)
+                    })
+                )
         }
+
+
     </script>
 </body>
 </html>
