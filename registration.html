@@ -53,42 +53,73 @@
     <script>
         const mainDiv = document.getElementById('main')
 
-        function registrationModal() {
+        function Modal(name, sendFetch) {
             const modal = document.createElement('div')
             modal.innerHTML = `
-                <span id='close'>Закрыть</span>
-                <h3>Регистрация</h3>
-                <input id='nameInp' placeholder='Введите имя' type='text'>
-                <input id='passInp' placeholder='Введите пароль' type='password'>
-                <button id='send'>Отправить</button>
+                <span class='close'>Закрыть</span>
+                <h3>${name}</h3>
+                <input class='nameInp' placeholder='Введите имя' type='text'>
+                <input class='passInp' placeholder='Введите пароль' type='password'>
+                <button class='send'>Отправить</button>
             `
             modal.classList.add('modal')
             mainDiv.appendChild(modal)
 
-            document.getElementById('close').addEventListener('click', () => [
-                modal.remove()
-            ])
+            const closeBtn = modal.querySelector('.close');
+            const sendBtn = modal.querySelector('.send');
+            const nameInput = modal.querySelector('.nameInp');
+            const passInput = modal.querySelector('.passInp');
 
-            document.getElementById('send').addEventListener('click', () => {
+            closeBtn.addEventListener('click', () => {
+                modal.remove()
+            })
+
+            sendBtn.addEventListener('click', async() => {
                 const data = {
-                    username: document.getElementById('nameInp').value,
-                    password: document.getElementById('passInp').value
+                    username: nameInput.value,
+                    password: passInput.value
                 }
                 console.log(data);
                 
-                fetch('', {
-                    type: 'POST',
-                    headers: {"Content-Type": "application/json"},
-                    body: JSON.stringify()
-                }) //пост формы
-                //сохраняются на сервер но в ответ ничего не приходит
+                await sendFetch(data)
 
                 modal.remove()
             })
         }
 
         document.getElementById('regBtn').addEventListener('click', () => {
-            registrationModal()
+            Modal('Регистрация', async(formData) => {
+                const res = await fetch('', {
+                    method: 'POST',
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify(formData)
+                }) //пост формы
+                //сохраняются на сервер но в ответ ничего не приходит
+                const data = await res.json()
+                 if (res.ok) {
+                    alert('Регистрация прошла успешно!');
+                } else {
+                    alert('Ошибка регистрации')
+                }
+            })
+        })
+
+        document.getElementById('loginBtn').addEventListener('click', () => {
+            Modal('Вход', async (formData) => {
+                const res = await fetch('', {
+                    method: 'POST',
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify(formData)
+                }) //пост формы
+                //получить из бд, сгенерировать токен и вкинуть его обратно в JSON ({ accept: boolean, token: string })
+                const data = await res.json()
+                if (data.success && data.token) {
+                    localStorage.setItem('init_token', data.token)
+                    location.href = '/'
+                } else {
+                    alert('Такого пользователя не существует')
+                }
+            })
         })
     </script>
 </body>
