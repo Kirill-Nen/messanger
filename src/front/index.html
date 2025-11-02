@@ -65,10 +65,12 @@
                 })
                 .then(chatsObj => {
                     chats = chatsObj
+                    console.log(chats);
+                    
                     chatsObj.forEach((chat, i) => {
                         const chatLine = document.createElement('div')
                         chatLine.innerHTML = `
-                            <span class='chat_line'>${chat.parther}</span>
+                            <span class='chat_line'>${chat.partherId}</span>
                         `
                         chatList.appendChild(chatLine)
                     }) 
@@ -117,15 +119,51 @@
             if (e.target.classList.contains('chat_line')) {
                 let activeChat;
                 chats.forEach((chat, i) => {
-                    if (chat.parther === e.target.textContent) {
+                    if (chat.partherId === e.target.textContent) {
                         activeChat = chat
                     }
                 })
-
+                
                 modal(activeChat)
                 socket.emit('enjoy_chat', activeChat)
             }
         }) 
+
+
+        document.querySelector('#search').addEventListener('click', () => {
+            const modal = document.querySelector('div')
+            modal.innerHTML = `
+                <span class='close'>Закрыть</span>
+                <h3>Введите имя пользователя, чтобы начать чат</h3>
+                <input type='text' placeholder='Введите имя пользваотеля' id='input'>
+                <button id='submit'></button>
+            `
+
+            const closeBtn = document.querySelector('.close')
+            const submitBtn = document.querySelector('#submit')
+            const inp = document.querySelector('#input')
+
+            closeBtn.addEventListener('click', () => {
+                modal.remove()
+            })
+
+            submitBtn.addEventListener('click', async() => {
+                const inpValue = inp.value
+
+                //из бд приходит массив пользователей с похожими на текст запроса юзами
+                const res = await fetch('', {
+                    method: 'POST',
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({
+                        searchName: inpValue
+                    })
+                })
+
+                const searchUsersList = await res.json()
+
+                
+            })
+        })
     </script>
 </body>
 </html>

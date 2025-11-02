@@ -46,13 +46,13 @@ io.on('connection', (socket) => {
         
     })
 
-    socket.on('enjoy_chat', (describeingRoom) =>{
+    socket.on('enjoy_chat', (describeingRoom ) =>{
         socket.join(describeingRoom.room)
         describeingRoomObj = describeingRoom
     })
 
     socket.on('message', (history) => {
-        socket.to(describeingRoomObj.room).emit('new_history', history)
+        io.to(describeingRoomObj.room).emit('new_history', history)
     })
 })
 
