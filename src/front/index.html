@@ -4,9 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        .chat_line {
+            border: 2px solid black;
+            border-radius: 5%;
+        }
+
+        .modal {
+            z-index: 2;
+            position: fixed;
+            height: 50vh;
+            width: 50vw;
+            border: 1px solid black;
+            border-radius: 5%;
+            background: linear-gradient(45deg, rgb(255, 255, 71), rgb(255, 192, 76));
+
+            
+        }
+    </style>
 </head>
 <body>
-    <div>
+    <div id="mainDiv">
         <h3>Мои чаты</h3>
         <div class="chats">
 
@@ -15,32 +33,99 @@
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.min.js"></script>
     <script>
+        const chatList = document.querySelector('.chats')
+        let chats;
         const socket = io()
 
         socket.on('connect', () => {
             console.log(`Connect`);
         })
 
-        const chatList = document.querySelector('.chats')
+        socket.on('new_history', (history) => {
+            document.querySelector('.chat').innerHTML = ''
+            history.forEach(msg => {
+                const message = document.createElement('span')
+                message.textContent = msg
+                document.querySelector('.chat').appendChild(message)
+            })
+        })
+
+        localStorage.setItem('init_token', '8743ytf9825g4976f')
 
         if (!localStorage.getItem('init_token')) {
             location.href = '/registration'
         } else {
-            fetch('', {
-                method: 'POST',
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify()
+            fetch('/chats', {
+                method: 'GET',
+                headers: { "init_token": localStorage.getItem('init_token') },
             })
-                .then(res => res.json().chats) //приходит из обьекта пользователя (по его username из localStorage) поле chats (array) в json 
-                .then(
-                    res.forEach(element => {
-                        const chat = document.createElement('div')
-                        chatList.appendChild(chat)
-                    })
-                )
+                .then(res => res.json()) //приходит из обьекта пользователя (по его token из localStorage) поле chats (array) в json 
+                .then(data => {
+                    return data.chats; 
+                })
+                .then(chatsObj => {
+                    chats = chatsObj
+                    chatsObj.forEach((chat, i) => {
+                        const chatLine = document.createElement('div')
+                        chatLine.innerHTML = `
+                            <span class='chat_line'>${chat.parther}</span>
+                        `
+                        chatList.appendChild(chatLine)
+                    }) 
+                })
         }
 
+        function modal(chat) {
+            const modal = document.createElement('div')
+            modal.innerHTML = `
+                <span class='close'>Закрыть</span>
+                <div class='chat'></div>
+                <input type='text' class='inp'>
+                <button class='send'>Отправить</button>
+            `
+            modal.classList.add('modal')
+            document.querySelector('#mainDiv').appendChild(modal)
 
+            const closeBtn = modal.querySelector('.close');
+            const sendBtn = modal.querySelector('.send');
+            const input = modal.querySelector('.inp');
+
+            closeBtn.addEventListener('click', () => {
+                modal.remove()
+            })
+
+            sendBtn.addEventListener('click', async() => {
+                const message = input.value;
+                input.value = ''
+
+                //отправляется новое сообщение
+                //бек добавляет это сообщение в history и отправляет обновленный массив строк history отдельного чата
+                const allChat = await fetch('', {
+                    method: 'POST',
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({
+                        message: message
+                    })
+                })
+                const history = await allChat.json()
+
+                socket.emit('message', history)
+            })
+        }
+    
+        chatList.addEventListener('click', (e) => {
+            if (e.target.classList.contains('chat_line')) {
+                let activeChat;
+                chats.forEach((chat, i) => {
+                    if (chat.parther === e.target.textContent) {
+                        activeChat = chat
+                    }
+                })
+
+                modal(activeChat)
+                socket.emit('enjoy_chat', activeChat)
+            }
+        }) 
     </script>
 </body>
 </html>
