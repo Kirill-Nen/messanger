@@ -30,7 +30,13 @@ app.get('/chats', (req, res) => {
         ]
     }
 
-    res.send(data)
+    res.send(JSON.stringify(data))
+})
+
+app.get('/messages', (_, res) => {
+    res.send(JSON.stringify({
+        messages: ['hello', 'hello', 'how you?']
+    }))
 })
 
 app.get('/registration', (_, res) => {
@@ -48,11 +54,13 @@ io.on('connection', (socket) => {
 
     socket.on('enjoy_chat', (describeingRoom ) =>{
         socket.join(describeingRoom.room)
+        console.log('Socket add room');
+        
         describeingRoomObj = describeingRoom
     })
 
-    socket.on('message', (history) => {
-        io.to(describeingRoomObj.room).emit('new_history', history)
+    socket.on('new_message', (msg) => {
+        socket.to(describeingRoomObj.room).emit('new_message', msg)
     })
 })
 
