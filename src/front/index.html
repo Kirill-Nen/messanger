@@ -76,6 +76,9 @@
         <div class="mainChats">
             <h3>Мои чаты</h3>
             <button id="search">Новый чат</button>
+            <div class="new_person">
+
+            </div>
             <div class="chats">
     
             </div>
@@ -142,9 +145,8 @@
                 <button class='send'>Отправить</button>
             `
 
-            const resHistory = await fetch('/messages', {
-                method: 'GET',
-                headers: {"active-chat": activeChat.id}
+            const resHistory = await fetch(`/messages?chat_id=${activeChat.id}`, {
+                method: 'GET'
             })
             const history = await resHistory.json()
 
@@ -189,7 +191,7 @@
 
 
         document.querySelector('#search').addEventListener('click', () => {
-            const modal = document.querySelector('div')
+            const modal = document.querySelector('.new_person')
             modal.innerHTML = `
                 <span class='close'>Закрыть</span>
                 <h3>Введите имя пользователя, чтобы начать чат</h3>
