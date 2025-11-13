@@ -359,6 +359,14 @@
                 document.querySelector('.chat-board').appendChild(newMessage)
 
                 socket.emit('new_message', newMessageText)
+                //отправка нового сообщения в история чата
+                await fetch('', {
+                    method: 'POST',
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({
+                        message: newMessageText
+                    })
+                })
             })
         }
     
