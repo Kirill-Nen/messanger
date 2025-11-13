@@ -4,71 +4,264 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <style>
-        body {
-            background-color:  #EBFBE6;
-            overflow: hidden;
-            color: #333333;
-        }
+    <style>   
+    body {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        height: 100vh;
+        overflow: hidden;
+        color: #333333;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 
-        .main {
-            display: flex;
-            flex-direction: row;
-        }
+    .main {
+        display: flex;
+        flex-direction: row;
+        width: 95%;
+        height: 90vh;
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        overflow: hidden;
+    }
 
-        .mainChats {
-            height: 90vh;
-            width: 30vw;
-        }
+    .mainChats {
+        height: 100%;
+        width: 35%;
+        background: #f8f9fa;
+        border-right: 1px solid #e9ecef;
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+    }
 
-        .mainChats > h3 {
-            display: inline;
-            margin: 10px;
-        }
+    .mainChats > h3 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 20px;
+        display: block;
+    }
 
-        .chats {
-            margin: 10px;
-            width: auto;
-            height: 70vh;
-            background-color: #D6EEED;
-            border: 2px solid #2D2D2D;
-            border-radius: 5px;
+    #search {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-weight: 500;
+        margin-bottom: 20px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
 
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+    #search:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    }
 
-        .chat_line {
-            display: inline;
-            background-color: antiquewhite;
-            border: 2px solid black;
-            border-radius: 5%;
-            height: 5%;
-            width: 90%;
-            margin-top: 10px;
-            padding: 5px;
-        }
+    .chats {
+        flex: 1;
+        background-color: white;
+        border: 1px solid #e9ecef;
+        border-radius: 15px;
+        padding: 15px;
+        overflow-y: auto;
+        box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
 
-        .mainDialog {
-            height: 90vh;
-            width: 55vw;
-            background-color: #D6EEED;
-            border: 2px solid #2D2D2D;
-            border-radius: 5px;
+    .chat_line {
+        display: block;
+        background: white;
+        border: 1px solid #e9ecef;
+        border-radius: 12px;
+        padding: 15px;
+        margin-bottom: 10px;
+        cursor: grab;
+        transition: all 0.3s ease;
+        font-weight: 500;
+        color: #2c3e50;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
 
-            display: flex;
-            align-items: center;
-            flex-direction: column;
-        }
+    .chat_line:hover {
+        transform: translateY(-2px);
+        border-color: #667eea;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+    }
 
-        .chat-board {
-            margin: 15px;
-            border: 2px solid black;
-            border-radius: 5px;
-            width: 90%;
-            height: 70%;
-        }
+    .chat_line:active {
+        cursor: grabbing;
+        transform: scale(0.98);
+    }
+
+    .mainDialog {
+        height: 100%;
+        width: 65%;
+        background: white;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        padding: 30px;
+        position: relative;
+    }
+
+    .chat-board {
+        width: 100%;
+        height: 75%;
+        background: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 15px;
+        padding: 20px;
+        overflow-y: auto;
+        margin-bottom: 20px;
+        box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .chat-board p {
+        background: white;
+        padding: 12px 16px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        border-left: 4px solid #667eea;
+    }
+
+    .send_messages_panel {
+        display: flex;
+        flex-direction: row;
+        width: 90%;
+    }
+
+    #inp {
+        width: 70%;
+        padding: 12px 20px;
+        border: 1px solid #e9ecef;
+        border-radius: 25px;
+        margin-right: 10px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+    }
+
+    #inp:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .send {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 25px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    .send:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    .new_person {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 30px;
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        min-width: 400px;
+    }
+
+    .new_person h3 {
+        margin-bottom: 20px;
+        color: #2c3e50;
+        font-weight: 600;
+    }
+
+    .new_person input {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid #e9ecef;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        font-size: 14px;
+    }
+
+    .new_person input:focus {
+        outline: none;
+        border-color: #667eea;
+    }
+
+    .close {
+        position: absolute;
+        top: 15px;
+        right: 20px;
+        background: #f8f9fa;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 8px;
+        cursor: pointer;
+        color: #6c757d;
+        transition: all 0.3s ease;
+    }
+
+    .close:hover {
+        background: #e9ecef;
+        color: #495057;
+    }
+
+    #submit {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-weight: 500;
+        width: 100%;
+        transition: all 0.3s ease;
+    }
+
+    #submit:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    .mainDialog.drag-over {
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+        border: 2px dashed #667eea;
+    }
+
+    .chats::-webkit-scrollbar,
+    .chat-board::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .chats::-webkit-scrollbar-track,
+    .chat-board::-webkit-scrollbar-track {
+        background: #f1f3f4;
+        border-radius: 3px;
+    }
+
+    .chats::-webkit-scrollbar-thumb,
+    .chat-board::-webkit-scrollbar-thumb {
+        background: #c1c1c1;
+        border-radius: 3px;
+    }
+
+    .chats::-webkit-scrollbar-thumb:hover,
+    .chat-board::-webkit-scrollbar-thumb:hover {
+        background: #a8a8a8;
+    }
     </style>
 </head>
 <body>
@@ -76,9 +269,6 @@
         <div class="mainChats">
             <h3>Мои чаты</h3>
             <button id="search">Новый чат</button>
-            <div class="new_person">
-
-            </div>
             <div class="chats">
     
             </div>
@@ -105,7 +295,8 @@
             document.querySelector('.chat-board').appendChild(message)
         })
 
-        localStorage.setItem('init_token', '8743ytf9825g4976f')
+        //localStorage.setItem('init_token', '8743ytf9825g4976f')
+        //localStorage.removeItem('init_token')
 
         if (!localStorage.getItem('init_token')) {
             location.href = '/registration'
@@ -141,8 +332,10 @@
             
             parent.innerHTML = `
                 <div class='chat-board'></div>
-                <input type='text' id='inp'>
-                <button class='send'>Отправить</button>
+                <div class='send_messages_panel'>
+                    <input type='text' id='inp'>
+                    <button class='send'>Отправить</button>
+                </div>
             `
 
             const resHistory = await fetch(`/messages?chat_id=${activeChat.id}`, {
@@ -191,7 +384,8 @@
 
 
         document.querySelector('#search').addEventListener('click', () => {
-            const modal = document.querySelector('.new_person')
+            const modal = document.createElement('div')
+            modal.classList.add('new_person')
             modal.innerHTML = `
                 <span class='close'>Закрыть</span>
                 <h3>Введите имя пользователя, чтобы начать чат</h3>
@@ -199,9 +393,9 @@
                 <button id='submit'></button>
             `
 
-            const closeBtn = document.querySelector('.close')
-            const submitBtn = document.querySelector('#submit')
-            const inp = document.querySelector('#input')
+            const closeBtn = modal.querySelector('.close')
+            const submitBtn = modal.querySelector('#submit')
+            const inp = modal.querySelector('#input')
 
             closeBtn.addEventListener('click', () => {
                 modal.remove()
@@ -223,6 +417,8 @@
 
                 
             })
+
+            document.querySelector('body').appendChild(modal)
         })
     </script>
 </body>

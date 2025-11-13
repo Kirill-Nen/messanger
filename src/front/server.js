@@ -67,3 +67,25 @@ io.on('connection', (socket) => {
 server.listen(9000, () => {
     console.log('Сервер запущен');
 })
+
+//min test api
+/*app.use(express.json());
+
+let users = []
+
+app.post('/api/users/register', (req, res) => {
+    try {
+        const user = req.body;
+
+        users.push(user)
+        console.log(users);
+        res.send(true)    
+    } catch (error) {
+        res.send(false)
+    }
+    
+})
+
+app.post('http://localhost:9000/api/users/login', (req, res) => {
+
+})*/
