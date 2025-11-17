@@ -1,9 +1,10 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, g
+
+from .auth_controller import auth_key_required
 
 from ..db.repositories.users import UserRepository
 from ..db.models.users import User
 
-from ..auth import decode_access_token
 
 blueprint = Blueprint(
     name='users',
@@ -16,7 +17,7 @@ blueprint = Blueprint(
 def create_user():
     data = request.get_json()
     if data and 'username' in data and 'password' in data:
-        username, password= data['username'], data['password']
+        username, password = data['username'], data['password']
         if not UserRepository.validate_exists(username):
             return jsonify({
                 'success': False,
@@ -56,23 +57,7 @@ def login_user():
     })
     
 
-@blueprint.route('/validate_token', methods=['POST', 'OPTIONS'])
+@blueprint.route('/validate_token')
+@auth_key_required
 def validate_token():
-    data = request.get_json()
-    if data:
-        token = data['auth_token']
-        decoded_data = decode_access_token(token)
-        if decoded_data and 'id' in decoded_data:
-            user = UserRepository.get(User.id == decoded_data['id'])
-            if user:
-                return jsonify({
-                    'success': True,
-                    'data': {
-                        'id': user.id,
-                        'username': user.username
-                    }
-                })
-    return jsonify({
-        'success': False,
-        'message': 'validate error'
-    }), 401
+    return jsonify({'success': True})

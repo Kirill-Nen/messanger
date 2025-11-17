@@ -1,5 +1,6 @@
 from sqlalchemy import Column, String, Integer
 from werkzeug.security import generate_password_hash, check_password_hash
+import time
 
 from ..base import Base
 from ...auth import create_access_token
@@ -20,6 +21,11 @@ class User(Base):
     password = Column(
         String,
         nullable=False
+    )
+    last_activity = Column(
+        Integer,
+        nullable=False,
+        default=int(time.time())
     )
 
     def set_password(self, password):
