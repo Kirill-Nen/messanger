@@ -112,7 +112,7 @@
         transform: rotate(90deg);
     }
 
-    .nameInp, .passInp {
+    .nameInp, .passInp, .usernameInp {
         padding: 15px 20px;
         border: 2px solid #e9ecef;
         border-radius: 12px;
@@ -121,7 +121,7 @@
         background: #f8f9fa;
     }
 
-    .nameInp:focus, .passInp:focus {
+    .nameInp:focus, .passInp:focus, .usernameInp {
         outline: none;
         border-color: #667eea;
         background: white;
@@ -129,7 +129,7 @@
         transform: translateY(-2px);
     }
 
-    .nameInp::placeholder, .passInp::placeholder {
+    .nameInp::placeholder, .passInp::placeholder, .usernameInp {
         color: #a0a0a0;
     }
 
@@ -185,8 +185,9 @@
             modal.innerHTML = `
                 <span class='close'>Закрыть</span> 
                 <h3>${name}</h3>
-                <input class='nameInp' placeholder='Введите имя' type='text' maxlength='10' >
+                <input class='usernameInp' placeholder='Введите nickname' type='text' maxlength='10' >
                 <input class='passInp' placeholder='Введите пароль' type='password'>
+                <input class='nameInp' placeholder='Введите ФИО' type='text' maxlength='55' >
                 <button class='send'>Отправить</button>
             `
             modal.classList.add('modal')
@@ -194,6 +195,7 @@
 
             const closeBtn = modal.querySelector('.close');
             const sendBtn = modal.querySelector('.send');
+            const usernameInput = modal.querySelector('.usernameInp')
             const nameInput = modal.querySelector('.nameInp');
             const passInput = modal.querySelector('.passInp');
 
@@ -204,6 +206,7 @@
             sendBtn.addEventListener('click', async() => {
                 if (nameInput.value !== '' && passInput.value !== '') {
                     const data = {
+                        real_name: usernameInput.value,
                         username: nameInput.value,
                         password: passInput.value
                     }
