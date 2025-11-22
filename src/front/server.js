@@ -15,20 +15,7 @@ app.get('/', (_, res) => {
 })
 
 app.get('/chats', (req, res) => {
-    const data = {
-        chats: [
-            {
-                partherId: 'test1',
-                room: '8743ytf9825g4976f/odfb4356tfhygdfgt4653',
-                history: []
-            },
-            {
-                partherId: 'test2',
-                room: '8743ytf9825g4976f/324h0f87245f8',
-                history: []
-            }
-        ]
-    }
+    const data = {}
 
     res.send(JSON.stringify(data))
 })

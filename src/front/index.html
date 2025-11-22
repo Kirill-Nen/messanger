@@ -307,7 +307,9 @@
             })
                 .then(res => res.json())
                 .then(data => {
-                    return data.chats; 
+                    if (data.success) {
+                        return data.data
+                    }
                 })
                 .then(chatsObj => {
                     chats = chatsObj
@@ -315,7 +317,7 @@
                     
                     chatsObj.forEach((chat, i) => {
                         const chatLine = document.createElement('span')
-                        chatLine.textContent = chat.partherId
+                        chatLine.textContent = `${chat.user_entity.username}, created: ${chat.created.time}`
                         chatLine.setAttribute('draggable', 'true')
                         chatLine.classList.add('chat_line')
                         chatList.appendChild(chatLine)
