@@ -303,7 +303,7 @@
         } else {
             fetch('/chats', {
                 method: 'GET',
-                headers: { "init_token": localStorage.getItem('init_token') },
+                headers: { 'Auth-Key': localStorage.getItem('init_token') },
             })
                 .then(res => res.json())
                 .then(data => {
