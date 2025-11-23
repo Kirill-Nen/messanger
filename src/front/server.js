@@ -33,13 +33,13 @@ app.get('/registration', (_, res) => {
 
 io.on('connection', (socket) => {
     console.log(`Socket  ${socket.id}`);
-    
+
     socket.on('disconnect', () => {
         console.log(`Socket отключился ${socket.id}`);
-        
+
     })
 
-    socket.on('enjoy_chat', (active_chat) =>{
+    socket.on('enjoy_chat', (active_chat) => {
         socket.join(active_chat.chat_id)
         console.log('Socket add room');
     })
