@@ -9,6 +9,7 @@ const server = http.createServer(app)
 const io = new Server(server)
 
 app.use(express.static(path.join(__dirname)))
+app.use(express.static(path.join(__dirname, 'modules')))
 
 app.get('/', (_, res) => {
     res.sendFile(path.join(__dirname, 'index.html'))
@@ -27,27 +28,28 @@ app.get('/messages', (_, res) => {
 })
 
 app.get('/registration', (_, res) => {
-    res.sendFile(path.join(__dirname, 'registration.html'))
+    res.sendFile(path.join(__dirname, 'modules', 'registration.html'))
 })
 
 io.on('connection', (socket) => {
     console.log(`Socket  ${socket.id}`);
-    let describeingRoomObj;
     
     socket.on('disconnect', () => {
         console.log(`Socket отключился ${socket.id}`);
         
     })
 
-    socket.on('enjoy_chat', (describeingRoom ) =>{
-        socket.join(describeingRoom.room)
+    socket.on('enjoy_chat', (active_chat) =>{
+        socket.join(active_chat.chat_id)
         console.log('Socket add room');
-        
-        describeingRoomObj = describeingRoom
     })
 
-    socket.on('new_message', (msg) => {
-        socket.to(describeingRoomObj.room).emit('new_message', msg)
+    socket.on('exit_room', (active_chat) => {
+        socket.leave(active_chat.chat_id)
+    })
+
+    socket.on('new_message', (msg, active_chat) => {
+        socket.to(active_chat.chat_id).emit('new_message', msg)
     })
 })
 
