@@ -94,6 +94,10 @@ body {
     overflow-y: auto;
     margin-bottom: 20px;
     box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.05);
+
+    display: flex;
+    flex-direction: column;
+    align-items: start;
 }
 
 .chat-board p {
@@ -103,6 +107,10 @@ body {
     margin-bottom: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
     border-left: 4px solid #667eea;
+}
+
+.chat_board > .my-messages {
+    align-items: end;
 }
 
 .send_messages_panel {
@@ -143,6 +151,10 @@ body {
     box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
 }
 
+.new-person {
+    position: relative;
+}
+
 .new-person label {
     margin-bottom: 20px;
     color: #2c3e50;
@@ -154,7 +166,6 @@ body {
     padding: 12px 15px;
     border: 1px solid #e9ecef;
     border-radius: 10px;
-    margin-bottom: 10px;
     margin-top: 5px;
     font-size: 14px;
     transition:
@@ -172,6 +183,23 @@ body {
 .mainDialog.drag-over {
     background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
     border: 2px dashed #667eea;
+}
+
+.autocomplete-dropdown {
+    display: none;
+    position: absolute;
+    height: auto;
+    width: 80%;
+    padding: 12px 15px;
+    background: white;
+    z-index: 1000;
+    transition: 
+        height 1s ease-in;
+}
+
+.autocomplete-dropdown .active {
+    display: flex;
+    flex-direction: column;
 }
 
 .chats::-webkit-scrollbar,

@@ -1,6 +1,8 @@
 const socket = io()
 
-localStorage.setItem('init_token', '8743ytf9825g4976f')
+//localStorage.setItem('init_token', '8743ytf9825g4976f')
+//localStorage.setItem('user_id', 'i4u5hgt4387o')
+//localStorage.removeItem('user_id')
 //localStorage.removeItem('init_token')
 
 class main_controller {
@@ -70,9 +72,12 @@ class main_controller {
         })
         const history = await resHistory.json()
 
-        history.data.messages.forEach((elem) => {
-            const message = document.createElement('p')
-            message.textContent = elem.content
+        history.data.messages.forEach((message) => {
+            const message_line = document.createElement('p')
+            message_line.textContent = message.content
+            if (message.to === localStorage.getItem('user_id')) {
+                message_line.classList.add('my-messages')
+            }
             document.querySelector('.chat-board').appendChild(message)
         })
 
@@ -142,18 +147,17 @@ class main_controller {
 
             const data = await res.json()
 
+            document.querySelector('.autocomplete-dropdown').innerHTML = ''
+            document.querySelector('.autocomplete-dropdown').classList.remove('active')
+
             if (data.success) {
-                if (!Array.isArray(data.nicks)) {
+                data.nicks.forEach((nick, i) => {
                     const line = document.createElement('div')
-                    line.textContent = data.nicks
+                    line.textContent = nick
                     document.querySelector('.autocomplete-dropdown').appendChild(line)
-                } else {
-                    data.nicks.forEach((nick, i) => {
-                        const line = document.createElement('div')
-                        line.textContent = nick
-                        document.querySelector('.autocomplete-dropdown').appendChild(line)
-                    })
-                }
+
+                    document.querySelector('.autocomplete-dropdown').classList.add('active')
+                })
             }
         }, 300)
 

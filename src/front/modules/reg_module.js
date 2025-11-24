@@ -73,6 +73,7 @@ class controller_reg {
                 const data = await res.json()
                 if (data.success && data.token) {
                     localStorage.setItem('init_token', data.token)
+                    localStorage.setItem('user_id', data.user_id)
                     location.href = '/'
                 } else {
                     alert('Такого пользователя не существует')
